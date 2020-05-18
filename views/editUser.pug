@@ -1,0 +1,26 @@
+extends home
+  
+block headbar
+  br
+  br
+  .container
+    .row.justify-content-md-center
+      .col-8
+
+        form(action="/users/"+user.id+"/edit", method="POST", enctype="multipart/form-data")
+          .form-group
+            label Enter new name
+            input.form-control(type="text" name="name"  value=user.name)
+          .form-group
+            label Avatar
+            br
+            input.from-control-file(name="avatar", type='file')
+          
+          button.btn.btn-primary Update
+        br
+        br
+        
+        .btn.btn-outline-primary Avatar: 
+          img(src=user.avatarUrl, width='64')
+        .alert-success.alert Name: 
+          span=user.name

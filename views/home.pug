@@ -1,0 +1,26 @@
+extends layout
+  
+block content
+
+  nav.navbar.navbar-expand-lg.navbar-dark.bg-dark
+    a.navbar-brand(href="/")
+      img(src='https://cdn.glitch.com/f83a019a-15ff-46e3-b687-7bb9ae6c2b5d%2Flogo.png?v=1587907771835' idth="40" height="40")
+      div.collapse.navbar-collapse
+        div.navbar-nav
+          a.nav-item.nav-link(href='/books') Books
+          a.nav-item.nav-link(href='/books/manageBook') Manage books
+          a.nav-item.nav-link(href='/users') Users
+          a.nav-item.nav-link(href='/transactions') Transactions
+          if quantity > 0
+            a.nav-item.nav-link(href='/cart') Cart(#{quantity})
+          else 
+            a.nav-item.nav-link(href='/cart') Cart
+           
+  block headbar
+    .container
+      br
+      br
+      h1 Home page
+      br
+      a.btn.btn-primary(href='/auth/login') Login
+    

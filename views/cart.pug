@@ -1,0 +1,26 @@
+extends home
+  
+block headbar
+  br
+  br
+  
+  if books
+    .container
+    .row.justify-content-md-center
+      .col-8
+              
+          table.table.table-bordered.table-striped
+            tr
+              th Cover
+              th Title
+              th Quantity
+            each book in books  
+              tr  
+                  td.d-flex.justify-content-center.align-items-center
+                      img(src=book.book.coverUrl, width='64')
+                  td=book.book.title
+                  td=book.quantity
+          
+          a.btn.btn-primary(href='/cart/hire') Hire
+  else
+    .alert.text-center.alert-primary Nothing
