@@ -1,0 +1,24 @@
+extends home
+  
+block headbar
+  br
+  br
+  .container
+    .row.justify-content-md-center
+      .col-8
+      
+        form(action="/books/"+book.id+"/edit", method="POST")
+          .form-group
+            label Enter new title
+            input.form-control(type="text" name="title"  value=book.title)
+            
+          button.btn.btn-primary Update
+          
+        br
+        br
+          
+        .alert.alert-primary Title: 
+          span=book.title
+
+        .alert.alert-success Descripttion: 
+          span=book.description

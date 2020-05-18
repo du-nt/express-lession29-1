@@ -1,0 +1,44 @@
+extends home
+  
+block headbar
+  br
+  br
+  .container
+    .row.justify-content-md-center
+      .col-8
+        form(action="/users/add", method="POST")
+          .form-group
+            label New user
+            input.form-control(type="text", name="name", placeholder='Enter user\'s name')
+            
+          .form-group
+            label Email
+            input.form-control(type="text", name="email", placeholder='Enter user\'s email')
+
+          if errors
+            each error in errors
+              .alert.alert-danger= error
+
+          button.btn.btn-primary Add
+                
+        table.table.table-bordered.table-striped
+            tr
+              th Avatar
+              th Name
+              th Email
+              th Edit
+              th Delete
+            each user in users  
+              tr  
+                  if user.avatarUrl
+                    td.d-flex.justify-content-center.align-items-center
+                      img(src=user.avatarUrl, width='64')
+                  else
+                    td.d-flex.justify-content-center.align-items-center
+                      img(src="https://i1.sndcdn.com/avatars-000409376361-pbso33-t500x500.jpg", width='64')
+                  td=user.name
+                  td=user.email
+                  td
+                    a.mx-1.btn.btn-outline-info(href='/users/'+user.id+'/edit') Edit
+                  td
+                    a.btn.btn-outline-danger(href='/users/'+user.id+'/delete') Delele

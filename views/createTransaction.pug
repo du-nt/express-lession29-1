@@ -1,0 +1,26 @@
+extends home
+  
+block headbar
+  br
+  br
+  .container
+    .row.justify-content-md-center
+      .col-8
+        form(method="POST")
+          .form-group
+            label Transaction name 
+            input.form-control(name='name')
+            
+            .form-group
+            label Choose a user
+            select.custom-select(name='userId')
+              each user in users
+                option(value=user.id)=user.name
+                
+            .form-group
+            label Choose a book: 
+            select.custom-select(name='bookId')
+              each book in books
+                option(value=book.id)=book.title
+
+          button.btn.btn-primary Create

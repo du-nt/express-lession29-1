@@ -1,0 +1,40 @@
+extends home
+  
+block headbar
+  br
+  br
+  .container
+    .row.justify-content-md-center
+      .col-8
+        form(action="/books/add", method="POST", enctype="multipart/form-data")
+          .form-group
+            lable Add new book
+            input.form-control(type="text", name="title", placeholder='Enter book\'s name')
+          .form-group
+            textarea.form-control( name="description" placeholder='Enter book\'s description')
+          .form-group
+            label Cover
+            br
+            input.from-control-file(name="cover", type='file')
+            
+          button.btn.btn-primary Add
+
+          br
+          br
+              
+          table.table.table-bordered.table-striped
+            tr
+              th Cover
+              th Title
+              th Edit
+              th Delete
+            each book in books  
+              tr  
+                  if book.coverUrl
+                    td.d-flex.justify-content-center.align-items-center
+                      img(src=book.coverUrl, width='64')
+                  td=book.title
+                  td
+                    a.mx-1.btn.btn-outline-info(href='/books/'+book.id+'/edit') Edit
+                  td
+                    a.btn.btn-outline-danger(href='/books/'+book.id+'/delete') Delele

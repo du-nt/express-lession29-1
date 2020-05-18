@@ -1,0 +1,32 @@
+extends home
+  
+block headbar
+  br
+  br
+  
+  if transactions.length
+    .container
+      .row.justify-content-md-center
+        .col-8
+          if isAdmin
+            a.btn.btn-primary(href='/transactions/create') Create transaction
+          br  
+          br
+          table.table.table-bordered.table-striped
+              tr
+                th Id
+                th Name
+                th Status
+              each transaction in transactions  
+                tr
+                    td=transaction.id
+                    td=transaction.name
+                    if transaction.isComplete 
+                      td 
+                        btn.btn.btn-secondary.disabled=transaction.isComplete
+                    else
+                      td
+                        a.btn.btn-primary(href='/transactions/'+transaction.id+'/complete')=transaction.isComplete
+
+  else
+    .alert.text-center.alert-primary Nothing

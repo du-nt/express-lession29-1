@@ -1,0 +1,16 @@
+extends home
+  
+block headbar
+  br
+  br
+  
+  .container
+    .row
+        each book in books
+            .col-3.p-3
+              .card
+                img.card-img-top(src=book.coverUrl)
+                .card-body
+                  h5.card-title= book.title
+                  p.card-text=book.description
+                  a.btn.btn-primary(href='/cart/add/'+book.id) Add to Cart
