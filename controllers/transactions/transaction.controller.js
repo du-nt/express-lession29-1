@@ -3,12 +3,6 @@ const User = require("../../models/user.model");
 const Book = require("../../models/book.model");
 
 module.exports.index = (req, res) => {
-  //   var page = parseInt(req.query.page) || 1;
-  //   var perPage = 5;
-
-  //   var start = (page - 1) * perPage;
-  //   var end = page * perPage;
-
   if (!res.locals.isAdmin) {
     Transaction.find({ userId: res.locals.user.id }).then(transactions =>
       res.render("transactions", { transactions })
@@ -43,6 +37,16 @@ module.exports.complete = async (req, res) => {
     const transaction = await Transaction.findById(req.params.id);
     transaction.isComplete = true;
     await transaction.save();
+    res.redirect("/transactions");
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+module.exports.delete = async (req, res) => {
+  try {
+    const transaction = await Transaction.findById(req.params.id);
+    await transaction.remove();
     res.redirect("/transactions");
   } catch (err) {
     console.log(err);

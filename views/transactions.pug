@@ -17,16 +17,25 @@ block headbar
                 th Id
                 th Name
                 th Status
+                if isAdmin
+                  th Action
               each transaction in transactions  
                 tr
                     td=transaction.id
                     td=transaction.name
+                    
                     if transaction.isComplete 
                       td 
                         btn.btn.btn-secondary.disabled=transaction.isComplete
                     else
+                      if isAdmin
+                        td
+                          a.btn.btn-primary(href='/transactions/'+transaction.id+'/complete')=transaction.isComplete
+                      else 
+                        td
+                          btn.btn.btn-primary=transaction.isComplete
+                    if isAdmin
                       td
-                        a.btn.btn-primary(href='/transactions/'+transaction.id+'/complete')=transaction.isComplete
-
+                        a.btn.btn-outline-danger(href='/transactions/'+transaction.id+'/delete') Delele
   else
     .alert.text-center.alert-primary Nothing

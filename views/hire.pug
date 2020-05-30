@@ -14,22 +14,14 @@ block headbar
               th Cover
               th Title
               th Quantity
-              th Action
             each item in items  
               tr  
                   td.d-flex.justify-content-center.align-items-center
                       img(src=item.item.coverUrl, width='64')
                   td=item.item.title
                   td=item.qty
-                  td
-                    a.btn.btn-outline-info(href='/cart/reduce/'+item.item._id) -1
-                    |
-                    |
-                    a.btn.btn-outline-success(href='/cart/increase/'+item.item._id) +1
-                    |
-                    |
-                    a.btn.btn-outline-danger(href='/cart/remove/'+item.item._id) Remove
+          .d-flex.justify-content-between
+            a.btn.btn-primary(href='/cart') Back
+            a.btn.btn-primary(href='/cart/hirenow') Confirm
           
-          a.btn.btn-primary(href='/cart/hire') Next to  hire
-  else
-    .alert.text-center.alert-primary No items in cart
+          

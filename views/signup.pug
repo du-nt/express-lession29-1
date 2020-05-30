@@ -9,18 +9,27 @@ block headbar
           br  
           br
           br
-          form(action="/auth/login", method="POST")
+          
+          form(action="/auth/signup", method="POST")
+            .form-group
+              label Username
+              input.form-control(type="text", name="name", placeholder='Enter username', value = values? values.name : '')
             .form-group
               label Email
               input.form-control(type="text", name="email", placeholder='Enter email', value = values? values.email : '')
             .form-group
               label Password
               input.form-control(type="password", name="password", placeholder='Enter password', value = values? values.password : '')
+            .form-group
+              label Repeat Password
+              input.form-control(type="password", name="password2", placeholder='Repeat password', value = values? values.password2 : '')
 
             if errors
               each error in errors
                 .alert.alert-danger= error
 
-            button.btn.btn-primary Login
+            button.btn.btn-primary Signup
+            
+                
 
-          a(href='/auth/signup') Create an account
+          a(href='/auth/login') Already have an account? Sign in

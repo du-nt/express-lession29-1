@@ -6,7 +6,7 @@ block headbar
   
   .container
     .row
-        each book in books
+        each book in books.docs
             .col-3.p-3
               .card
                 img.card-img-top(src=book.coverUrl)
@@ -14,3 +14,77 @@ block headbar
                   h5.card-title= book.title
                   p.card-text=book.description
                   a.btn.btn-primary(href='/cart/add/'+book.id) Add to Cart
+  br
+  br
+  nav(aria-label='Page navigation example')
+  ul.pagination.justify-content-center
+    
+    if books.page===1
+      li.page-item.disabled
+        a.page-link(tabindex='-1', aria-disabled='true') Fist
+    else
+      li.page-item
+        a.page-link(href="/books/?page=1", tabindex='-1', aria-disabled='true') Fist
+        
+    if books.hasPrevPage
+      li.page-item
+        a.page-link(href="/books/?page="+books.prevPage, tabindex='-1', aria-disabled='true') Previous
+    else
+      li.page-item.disabled
+        a.page-link(tabindex='-1', aria-disabled='true') Previous
+        
+    if books.totalPages <=5
+      - var n = 1;
+      while n <= books.totalPages
+          if n === books.page
+            li.page-item.active
+              a.page-link()=n
+          else
+            li.page-item
+              a.page-link(href="/books/?page="+n)=n
+          -n++  
+    else 
+      if books.page <=3
+        - var n = 1;
+        while n <= 5
+          if n === books.page
+            li.page-item.active
+              a.page-link()=n
+          else
+            li.page-item
+              a.page-link(href="/books/?page="+n)=n
+          -n++  
+      else if books.page+2>= books.totalPages
+        - var n = books.totalPages-4;
+        while n <= books.totalPages
+          if n === books.page
+            li.page-item.active
+              a.page-link()=n
+          else
+            li.page-item
+              a.page-link(href="/books/?page="+n)=n
+          -n++  
+      else
+        - var n = books.page-2;
+        while n <= books.page+2
+          if n === books.page
+            li.page-item.active
+              a.page-link()=n
+          else
+            li.page-item
+              a.page-link(href="/books/?page="+n)=n
+          -n++    
+          
+    if books.hasNextPage
+      li.page-item
+        a.page-link(href="/books/?page="+books.nextPage, tabindex='-1', aria-disabled='true') Next
+    else
+      li.page-item.disabled
+        a.page-link(tabindex='-1', aria-disabled='true') Next
+        
+    if books.page===books.totalPages
+      li.page-item.disabled
+        a.page-link(tabindex='-1', aria-disabled='true') Last
+    else
+      li.page-item
+        a.page-link(href="/books/?page="+books.totalPages, tabindex='-1', aria-disabled='true') Last

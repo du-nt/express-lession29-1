@@ -14,11 +14,6 @@ cloudinary.config({
 const myPlaintextPassword = "123123";
 
 module.exports.index = (req, res) => {
-  //   var page = parseInt(req.query.page) || 1;
-  //   var perPage = 5;
-
-  //   var start = (page - 1) * perPage;
-  //   var end = page * perPage;
   User.find({ isAdmin: { $ne: true } }).then(users =>
     res.render("users", { users })
   );
@@ -71,4 +66,8 @@ module.exports.editUserPost = (req, res) => {
       .then(user => res.redirect("/users"))
       .catch(err => console.log(err));
   }
+};
+
+module.exports.profile = (req, res) => {
+  res.render("profile");
 };

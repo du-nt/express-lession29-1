@@ -1,26 +1,33 @@
-extends layout
+html
+  head
+    link(link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css")
+    link(rel="stylesheet" type="text/css" href="custom.css")
+  body
   
-block content
+    block content
+      nav.navbar.navbar-expand-lg.navbar-dark(style="background-color: #273526")
+        a.navbar-brand(href="/books")
+          img(src='https://cdn.glitch.com/f83a019a-15ff-46e3-b687-7bb9ae6c2b5d%2Flogo.png?v=1587907771835' idth="40" height="40")
+          div.collapse.navbar-collapse
+            div.navbar-nav
+              a.nav-item.nav-link(href='/books') Books
+              if isAdmin
+                a.nav-item.nav-link(href='/books/manageBook') Manage books
+                a.nav-item.nav-link(href='/users') Users
+              a.nav-item.nav-link(href='/transactions') Transactions
+              if quantity
+                a.nav-item.nav-link(href='/cart') Cart
+                  |
+                  |
+                  span.badge.badge-warning=quantity
+              else 
+                a.nav-item.nav-link(href='/cart') Cart
+              if !user
+                a.nav-item.nav-link(href='/auth/login') Login
+                a.nav-item.nav-link(href='/auth/signup') Signup
+              else
+                if !isAdmin
+                  a.nav-item.nav-link(href='/users/'+user.id+'/profile') My shop
+                a.nav-item.nav-link(href='/auth/logout') Logout
 
-  nav.navbar.navbar-expand-lg.navbar-dark.bg-dark
-    a.navbar-brand(href="/")
-      img(src='https://cdn.glitch.com/f83a019a-15ff-46e3-b687-7bb9ae6c2b5d%2Flogo.png?v=1587907771835' idth="40" height="40")
-      div.collapse.navbar-collapse
-        div.navbar-nav
-          a.nav-item.nav-link(href='/books') Books
-          a.nav-item.nav-link(href='/books/manageBook') Manage books
-          a.nav-item.nav-link(href='/users') Users
-          a.nav-item.nav-link(href='/transactions') Transactions
-          if quantity > 0
-            a.nav-item.nav-link(href='/cart') Cart(#{quantity})
-          else 
-            a.nav-item.nav-link(href='/cart') Cart
-           
-  block headbar
-    .container
-      br
-      br
-      h1 Home page
-      br
-      a.btn.btn-primary(href='/auth/login') Login
-    
+    block headbar

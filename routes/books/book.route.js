@@ -1,11 +1,11 @@
-var controller = require("../../controllers/books/book.controller");
-var express = require("express");
-var router = express.Router();
-var multer = require("multer");
+const controller = require("../../controllers/books/book.controller");
+const express = require("express");
+const router = express.Router();
+const multer = require("multer");
 
-var authMiddleware = require("../../middlewares/auth.middleware");
+const authMiddleware = require("../../middlewares/auth.middleware");
 
-var upload = multer({ dest: "covers/" });
+const upload = multer({ dest: "covers/" });
 
 router.get("/", controller.index);
 

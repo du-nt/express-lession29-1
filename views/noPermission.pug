@@ -1,10 +1,12 @@
-extends layout
-  
-block content
+html
+  head
+    link(link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css")
+    link(rel="stylesheet" type="text/css" href="custom.css")
+  body
 
-  .page-wrap.d-flex.flex-row.align-items-center
-    .container
-      .row.justify-content-center
-        .col-md-12.text-center
-          .mb-4.lead NO PERMISSION!
-          a.btn.btn-link(href='/') Back to Home
+    .page-wrap.d-flex.flex-row.align-items-center
+      .container
+        .row.justify-content-center
+          .col-md-12.text-center
+            .mb-4.lead NO PERMISSION!
+            a.btn.btn-link(href='/books') Back to Home
