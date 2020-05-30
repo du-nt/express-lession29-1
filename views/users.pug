@@ -30,12 +30,8 @@ block headbar
               th Delete
             each user in users  
               tr  
-                  if user.avatarUrl
-                    td.d-flex.justify-content-center.align-items-center
-                      img(src=user.avatarUrl, width='64')
-                  else
-                    td.d-flex.justify-content-center.align-items-center
-                      img(src="https://i1.sndcdn.com/avatars-000409376361-pbso33-t500x500.jpg", width='64')
+                  td.d-flex.justify-content-center.align-items-center
+                    img(src=user.avatarUrl, width='64')
                   td=user.name
                   td=user.email
                   td

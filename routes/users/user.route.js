@@ -1,20 +1,53 @@
-var controller = require("../../controllers/users/user.controller");
-var userValidate = require("../../validate/user.validate");
+const controller = require("../../controllers/users/user.controller");
+const userValidate = require("../../validate/user.validate");
+const authMiddleware = require("../../middlewares/auth.middleware");
 
-var multer = require("multer");
-var express = require("express");
-var router = express.Router();
+const multer = require("multer");
+const express = require("express");
+const router = express.Router();
 
-var upload = multer({ dest: "uploads/" });
+const upload = multer({ dest: "uploads/" });
 
-router.get("/", controller.index);
+router.get(
+  "/",
+  authMiddleware.requireAuth,
+  authMiddleware.isAdmin,
+  controller.index
+);
 
-router.post("/add", userValidate.addValidate, controller.addUserPost);
+router.post(
+  "/add",
+  authMiddleware.requireAuth,
+  authMiddleware.isAdmin,
+  controller.addUserPost
+);
 
-router.get("/:id/delete", controller.deleteUser);
+router.get(
+  "/:id/delete",
+  authMiddleware.requireAuth,
+  authMiddleware.isAdmin,
+  controller.deleteUser
+);
 
-router.get("/:id/edit", controller.editUserGet);
+router.get(
+  "/:id/edit",
+  authMiddleware.requireAuth,
+  authMiddleware.isAdmin,
+  controller.editUserGet
+);
 
-router.post("/:id/edit", upload.single("avatar"), controller.editUserPost);
+router.post(
+  "/:id/edit",
+  authMiddleware.requireAuth,
+  authMiddleware.isAdmin,
+  upload.single("avatar"),
+  controller.editUserPost
+);
+
+router.get(
+  "/:id/profile",
+  authMiddleware.requireAuth,
+  controller.profile
+);
 
 module.exports = router;

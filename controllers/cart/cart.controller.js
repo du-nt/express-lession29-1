@@ -1,74 +1,79 @@
 const Book = require("../../models/book.model");
 const Transaction = require("../../models/transaction.model");
-const Session = require("../../models/session.model");
+const Cart = require("../../models/cart.model");
 
 module.exports.index = function(req, res) {
-  res.render("cart");
+  const cart = new Cart(req.session.cart ? req.session.cart : {});
+  const items = cart.getItems();
+  if (items.length) {
+    res.render("cart", { items });
+  } else {
+    res.render("cart", { items: null });
+  }
+};
+
+module.exports.reduce = function(req, res) {
+  const bookId = req.params.id;
+  const cart = new Cart(req.session.cart ? req.session.cart : {});
+  cart.reduceOne(bookId);
+  req.session.cart = cart;
+  res.redirect("/cart");
+};
+
+module.exports.increase = function(req, res) {
+  const bookId = req.params.id;
+  const cart = new Cart(req.session.cart ? req.session.cart : {});
+  cart.increaseOne(bookId);
+  req.session.cart = cart;
+  res.redirect("/cart");
+};
+
+module.exports.remove = function(req, res) {
+  const bookId = req.params.id;
+  const cart = new Cart(req.session.cart ? req.session.cart : {});
+  cart.removeItem(bookId);
+  req.session.cart = cart;
+  res.redirect("/cart");
 };
 
 module.exports.addToCart = async function(req, res) {
   const bookId = req.params.bookId;
-  const sessionId = req.signedCookies.sessionId;
-
-  if (!sessionId) {
+  if (!req.session) {
     res.redirect("/books");
     return;
   }
-  const session = await Session.find({ sessionId });
-  if (session[0].cart.length === 0) {
-    await Session.findOneAndUpdate(
-      { sessionId },
-      {
-        $push: {
-          cart: {
-            bookId,
-            quantity: 1
-          }
-        }
-      },
-      { new: true }
-    );
-  } else {
-    const isExisting = session[0].cart.findIndex(
-      item => item.bookId === bookId
-    );
-    if (isExisting === -1) {
-      await Session.findOneAndUpdate(
-        { sessionId },
-        {
-          $push: {
-            cart: {
-              bookId,
-              quantity: 1
-            }
-          }
-        },
-        { new: true }
-      );
-    } else {
-      await Session.findOneAndUpdate(
-        { sessionId, "cart.bookId": bookId },
-        { $inc: { "cart.$.quantity": 1 } },
-        { new: true }
-      );
-    }
-  }
+  var cart = new Cart(req.session.cart ? req.session.cart : {});
+  const book = await Book.findById(bookId);
+  cart.add(book, bookId);
+  req.session.cart = cart;
   res.redirect("/books");
 };
 
 module.exports.hire = async function(req, res) {
-  const books = res.locals.books;
-  for (let book of books) {
-    for (let i = 1; i <= book.quantity; i++) {
+  if(!req.session.cart){
+    return res.redirect('/cart')
+  }
+  const cart = new Cart(req.session.cart);
+  const items = cart.getItems();
+  if (!items.length) {
+    return res.redirect('/cart')
+  }
+    res.render("hire", { items });
+  }
+
+module.exports.hireNow = async function(req, res) {
+  const cart = new Cart(req.session.cart ? req.session.cart : {});
+  const items = cart.getItems();
+  for (let item of items) {
+    for (let i = 1; i <= item.qty; i++) {
       let transaction = {};
-      transaction.name = `${res.locals.user.name}_${book.book.title}_${i}`;
-      transaction.userId = res.locals.user.id;
-      transaction.bookId = book.book.id;
+      transaction.name = `${res.locals.user.name}_${item.item.title}_${i}`;
+      transaction.userId = req.session.userId;
+      transaction.bookId = item.item._id;
       const newTransaction = new Transaction(transaction);
       await newTransaction.save();
     }
   }
-  const sessionId = req.signedCookies.sessionId;
-  await Session.findOneAndUpdate({ sessionId }, { cart: [] });
-  res.redirect("/transactions");
-};
+  req.session.cart = null
+  res.redirect('/books')
+  }

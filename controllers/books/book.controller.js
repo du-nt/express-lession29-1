@@ -10,12 +10,17 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET
 });
 
-module.exports.index = async (req, res, next) => {
+module.exports.index = async (req, res) => {
   try {
-    const books = await Book.find();
+    const { page, perPage } = req.query;
+      const options = {
+        page: parseInt(page, 10) || 1,
+        limit: parseInt(perPage, 10) || 8,
+      }
+    const books = await Book.paginate({}, options);
     res.render("books", { books });
   } catch (err) {
-    next(err);
+    console.error(err);
   }
 };
 
